@@ -1,0 +1,9 @@
+table one {
+    id integer PK
+    name text
+}
+
+table two {
+    id integer pk
+    address text
+}

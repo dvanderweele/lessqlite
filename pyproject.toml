@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "lessqlite"
+version = "0.1.0"
+description = ""
+authors = ["Dave VanderWeele <weele.me@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.0.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+Faker = "^8.1.4"
+coverage = "^5.5"
+dbml-sqlite = "^0.2.0"
+
+[tool.poetry.scripts]
+lessqlite = 'lessqlite.core:cli'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
