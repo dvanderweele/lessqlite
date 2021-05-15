@@ -45,3 +45,10 @@ def test_cli():
         assert 'Table Stats: one\n' in result.output 
         assert 'Table Stats: two\n' in result.output 
         assert 'Number of Rows: 500\n' in result.output
+        result = runner.invoke(cli, ['test.db', 'tables', 'one', '--chunk', '10'])
+        assert 'TABLE one' in result.output 
+        assert 'TABLE two' not in result.output 
+        result = runner.invoke(cli, ['test.db', 'tables', 'one', '--truncate', '-1', '--range', 'one', '-1', '15', '--chunk', '10'])
+        assert 'TABLE one' in result.output
+        result = runner.invoke(cli, ['test.db', 'tables', '--range', 'one', '2', '-1'])
+        assert 'TABLE two' in result.output
