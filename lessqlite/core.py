@@ -17,10 +17,10 @@ def cli(ctx, database):
         stats = {}
         conn.row_factory = sqlite3.Row
         with conn:
-            stats['tables'] = conn.execute('SELECT COUNT(*) FROM sqlite_schema WHERE type=\'table\'').fetchone()[0]
-            stats['indexes'] = conn.execute('SELECT COUNT(*) FROM sqlite_schema WHERE type=\'index\'').fetchone()[0]
-            stats['views'] = conn.execute('SELECT COUNT(*) FROM sqlite_schema WHERE type=\'view\'').fetchone()[0]
-            stats['triggers'] = conn.execute('SELECT COUNT(*) FROM sqlite_schema WHERE type=\'trigger\'').fetchone()[0]
+            stats['tables'] = conn.execute('SELECT COUNT(*) FROM sqlite_master WHERE type=\'table\'').fetchone()[0]
+            stats['indexes'] = conn.execute('SELECT COUNT(*) FROM sqlite_master WHERE type=\'index\'').fetchone()[0]
+            stats['views'] = conn.execute('SELECT COUNT(*) FROM sqlite_master WHERE type=\'view\'').fetchone()[0]
+            stats['triggers'] = conn.execute('SELECT COUNT(*) FROM sqlite_master WHERE type=\'trigger\'').fetchone()[0]
             stats['size'] = os.path.getsize(database)
         click.secho(f'Database Stats: {database}', bold=True)
         click.secho('+ File Size: ', nl=False)
@@ -56,7 +56,7 @@ def schema(ctx):
 @click.option('--range', '-r', '_range', multiple=True, nargs=3, type=(str, int, int), help='This option may be used multiple times and takes three arguments each time it is used: the name of a table, the lower row limit, and the upper row limit. For example, "--range customer 50 100" indicates you are only interested in records 50 (inclusive) through 100 (inclusive) in the customers table. In the absence of this option, all records in a table will be displayed. In any case, table records will not be displayed if: the table name is not also passed as an argument, or the default argument of all tables is used. If the upper limit is lower than the lower limit, your upper limit will be ignored and records through the end if the table will be displayed.')
 @click.option('--chunk', '-c', default=10, help='The number of rows to select at a time from the database\'s table(s) to power the pager. The default value is 10. Passing a 0 indicates to pull an entire table at once into memory.')
 @click.option('--truncate', '-t', default=0, help='The maximum number of characters to print for any field in any row pulled from the database. The default value of 0 indicates that no truncating should occur.')
-@click.option('--orderby', '-o', multiple=True, nargs=3, type=(str, str, str), help='Specify a table, column, and ASC or DESC to order the result set of rows fed into the pager accordingly. You may use one --orderby option for each table you are targeting.')
+@click.option('--orderby', '-o', 'order', multiple=True, nargs=3, type=(str, str, str), help='Specify a table, column, and ASC or DESC to order the result set of rows fed into the pager accordingly. You may use one --orderby option for each table you are targeting. You must pass the name of a column that exists in the database table you are targeting, or the program will enter an error state.')
 def tables(ctx, tablename, stats, _range, chunk, truncate, order):
     """
     Explore the data in an SQLite DATABASE. If one or more TABLENAMEs are provided, it is used as a whitelist of tables to print records from, otherwise all tables will be drawn from.
@@ -66,14 +66,14 @@ def tables(ctx, tablename, stats, _range, chunk, truncate, order):
         if len(tablename) < 1:
             conn = sqlite3.connect(ctx.obj['db'])
             with conn:
-                tablename = conn.execute('SELECT name FROM sqlite_schema WHERE type=\'table\'').fetchall()
+                tablename = conn.execute('SELECT name FROM sqlite_master WHERE type=\'table\'').fetchall()
                 tablename = [t[0] for t in tablename]
             conn.close()
         if stats:
             sg = stats_generator(ctx.obj['db'], tablename)
             lg = line_generator(sg)
         else:
-            tg = tables_generator(ctx.obj['db'], tablename, _range, chunk, truncate)
+            tg = tables_generator(ctx.obj['db'], tablename, _range, chunk, truncate, order)
             lg = line_generator(tg)
         click.echo_via_pager(lg)
 
@@ -83,7 +83,7 @@ cli.add_command(tables)
 def schema_generator(database):
     conn = sqlite3.connect(database)
     with conn:
-        tables = conn.execute('SELECT name FROM sqlite_schema WHERE type=\'table\'').fetchall()
+        tables = conn.execute('SELECT name FROM sqlite_master WHERE type=\'table\'').fetchall()
         for t in tables:
             cols = conn.execute(f'PRAGMA table_info({t[0]})').fetchall()
             yield f'\nTABLE {t[0]}:\n\n'
@@ -97,8 +97,9 @@ def schema_generator(database):
             yield '\n\n'
     conn.close()
 
-def tables_generator(database, tables, _range, chunk, truncate):
+def tables_generator(database, tables, _range, chunk, truncate, order):
     _range = get_range_dict(_range)
+    order = get_order_dict(order)
     if truncate < 0:
         truncate = 0
     conn = sqlite3.connect(database)
@@ -109,9 +110,20 @@ def tables_generator(database, tables, _range, chunk, truncate):
                 _range[t] = {}
                 _range[t]['l'] = 0
                 _range[t]['u'] = -1
+            if t not in order.keys():
+                order[t] = []
             yield f'***\nTABLE {t}:\n***\n\n'
+            order_segs = []
+            for i,v in enumerate(order[t]):
+                if i == 0:
+                    order_segs.append(' ORDER BY ')
+                order_segs.append(v[0])
+                order_segs.append(' ')
+                order_segs.append(v[1])
+                if i != len(order) - 1:
+                    order_segs.append(', ')
             if chunk < 1:
-                q = f"SELECT * FROM {t} LIMIT {_range[t]['u'] - _range[t]['l'] if _range[t]['u'] < 0 else _range[t]['u'] - _range[t]['l'] + 1} OFFSET {_range[t]['l'] - 1}"
+                q = f"SELECT * FROM {t} LIMIT {_range[t]['u'] - _range[t]['l'] if _range[t]['u'] < 0 else _range[t]['u'] - _range[t]['l'] + 1} OFFSET {_range[t]['l'] - 1}{''.join(order_segs)}"
                 results = conn.execute(q).fetchall()
                 for row in results:
                     for k in row.keys():
@@ -127,7 +139,7 @@ def tables_generator(database, tables, _range, chunk, truncate):
                     if _range[t]['u'] > _range[t]['l'] and base + chunk > _range[t]['u']:
                         local_chunk = _range[t]['u'] - base + 1
                         breakafter = True
-                    records = conn.execute(f'SELECT * FROM {t} LIMIT {local_chunk} OFFSET {base-1}').fetchall()
+                    records = conn.execute(f'SELECT * FROM {t} LIMIT {local_chunk} OFFSET {base-1}{"".join(order_segs)}').fetchall()
                     loops += 1
                     if len(records) < 1:
                         break
@@ -149,7 +161,7 @@ def stats_generator(database, tables):
             yield f'Table Stats: {t}\n'
             c = conn.execute(f'SELECT COUNT(*) FROM {t}').fetchone()[0]
             yield f'+ Number of Rows: {c}\n'
-            i = conn.execute(f'SELECT COUNT(*) FROM sqlite_schema WHERE type=\'index\' AND tbl_name=\'{t}\'').fetchone()[0]
+            i = conn.execute(f'SELECT COUNT(*) FROM sqlite_master WHERE type=\'index\' AND tbl_name=\'{t}\'').fetchone()[0]
             yield f'+ Number of Indexes: {i}\n'
             yield '\n'
     conn.close()
@@ -174,3 +186,22 @@ def get_range_dict(ranges):
         else:
             o[r[0]]['u'] = r[2]
     return o
+
+def get_order_dict(orders):
+    o = {}
+    for r in orders:
+        if r[0] not in o.keys():
+            o[r[0]] = []
+        o[r[0]].append((r[1]))
+        if r[2].upper() == 'ASC':
+            o[r[0]].append('ASC')
+        else:
+            o[r[0]].append('DESC')
+    return o
+
+
+
+
+
+
+
