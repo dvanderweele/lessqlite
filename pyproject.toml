@@ -12,7 +12,7 @@ click = "^8.0.0"
 pytest = "^5.2"
 Faker = "^8.1.4"
 coverage = "^5.5"
-dbml-sqlite = "^0.2.0"
+dbml-sqlite = "^0.2.1"
 
 [tool.poetry.scripts]
 lessqlite = 'lessqlite.core:cli'
