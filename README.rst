@@ -23,6 +23,9 @@ be able to use it from anywhere:
 
    pip install lessqlite
 
+Of course you can install it in a virtual environment as well for a
+project.
+
 Usage
 -----
 
