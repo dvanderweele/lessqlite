@@ -10,6 +10,9 @@ and scrolling through SQLite databases in your terminal.
 The program is powered by generator functions so that even SQLite
 databases of very large sizes can be paged through easily.
 
+If you do anything interesting with this library, shoot me a link and I
+can feature it in this README.
+
 Installation
 ------------
 
