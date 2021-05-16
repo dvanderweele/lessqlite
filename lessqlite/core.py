@@ -114,16 +114,21 @@ def tables_generator(database, tables, _range, chunk, truncate, order):
                 order[t] = []
             yield f'***\nTABLE {t}:\n***\n\n'
             order_segs = []
+            with open('sql2.log', 'w') as f:
+                f.write('\n')
             for i,v in enumerate(order[t]):
                 if i == 0:
                     order_segs.append(' ORDER BY ')
                 order_segs.append(v[0])
                 order_segs.append(' ')
                 order_segs.append(v[1])
-                if i != len(order) - 1:
+                if i != len(order[t]) - 1:
                     order_segs.append(', ')
             if chunk < 1:
-                q = f"SELECT * FROM {t} LIMIT {_range[t]['u'] - _range[t]['l'] if _range[t]['u'] < 0 else _range[t]['u'] - _range[t]['l'] + 1} OFFSET {_range[t]['l'] - 1}{''.join(order_segs)}"
+                q = f"SELECT * FROM {t}{''.join(order_segs)} LIMIT {_range[t]['u'] - _range[t]['l'] if _range[t]['u'] < 0 else _range[t]['u'] - _range[t]['l'] + 1} OFFSET {_range[t]['l'] - 1}"
+                with open('sql2.log', 'a') as f:
+                    f.write(q)
+                    f.write('\n')
                 results = conn.execute(q).fetchall()
                 for row in results:
                     for k in row.keys():
@@ -139,7 +144,11 @@ def tables_generator(database, tables, _range, chunk, truncate, order):
                     if _range[t]['u'] > _range[t]['l'] and base + chunk > _range[t]['u']:
                         local_chunk = _range[t]['u'] - base + 1
                         breakafter = True
-                    records = conn.execute(f'SELECT * FROM {t} LIMIT {local_chunk} OFFSET {base-1}{"".join(order_segs)}').fetchall()
+                    q = f'SELECT * FROM {t}{"".join(order_segs)} LIMIT {local_chunk} OFFSET {base}'
+                    with open('sql2.log', 'a') as f:
+                        f.write(q)
+                        f.write('\n')
+                    records = conn.execute(q).fetchall()
                     loops += 1
                     if len(records) < 1:
                         break
@@ -192,11 +201,13 @@ def get_order_dict(orders):
     for r in orders:
         if r[0] not in o.keys():
             o[r[0]] = []
-        o[r[0]].append((r[1]))
+        curr = []
+        curr.append(r[1])
         if r[2].upper() == 'ASC':
-            o[r[0]].append('ASC')
+            curr.append('ASC')
         else:
-            o[r[0]].append('DESC')
+            curr.append('DESC')
+        o[r[0]].append(curr)
     return o
 
 

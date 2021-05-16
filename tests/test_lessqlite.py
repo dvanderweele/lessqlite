@@ -52,3 +52,7 @@ def test_cli():
         assert 'TABLE one' in result.output
         result = runner.invoke(cli, ['test.db', 'tables', '--range', 'one', '2', '-1'])
         assert 'TABLE two' in result.output
+        result = runner.invoke(cli, ['test.db', 'tables', '--range', 'one', '1', '10', '--orderby', 'one', 'id', 'desc', '--orderby', 'one', 'name', 'asc'])
+        assert '499' in result.output
+        result = runner.invoke(cli, ['test.db', 'tables', '--range', 'one', '2', '11', '--chunk', '0'])
+        assert '2' in result.output 
