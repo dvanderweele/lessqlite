@@ -1,6 +1,7 @@
 # *lessqlite*
 
-WORK IN PROGRESS. NOT PUBLISHED TO PYPI YET.
+![lessqlite](https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main)](https://coveralls.io/github/dvanderweele/lessqlite?branch=main)
 
 `lessqlite` is a free command-line utility written in Python providing a pager-based interface (like Unix `less`) for exploring, browsing, and scrolling through SQLite databases in your terminal. 
 
