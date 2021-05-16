@@ -122,6 +122,24 @@ By default, the pager will page through all records in each targeted table. For 
 
 You can specify at most one range of records for each table you'll be paging through. Each usage of the `--range` option takes exactly three arguments: the name of the table that the range applies to, an integer referring to the lower limit (inclusive) for records to be displayed, and an integer referring to the upper limit (inclusive) for records to be displayed. 
 
+In this example, the 51st through 60th records of the result set will be displayed:
+
+```
+lessqlite example.db tables student --range 51 60
+```
+
+Note, 51 to 60 is *not* necessarily synonymous with records with ids 51 to 60. 
+
 #### Ordering Records
 
-WIP
+The `--orderby` option takes three arguments: a table name, the name of a column in that table, and either ASC or DESC. This allows you to sort the result set of columns according to a particular column before they are fed into the pager.
+
+You may specify this option multiple times, one or more times per table. If a particular table is targeted by more than one option, it will apply the orderings in the order you specified them.
+
+For example, sort the student table records by last_name in ascending order and the instructor table by id in descending order:
+
+```
+lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
+```
+
+According to my tests, it seems as though tables whose integer primary keys are an alias for the SQLite rowids (the most common type of SQLite table), in the absence of an explicit ordering, will tend to have their records selected in an ascending order according to those primary keys. 
