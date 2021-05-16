@@ -1,0 +1,123 @@
+# lessqlite
+
+
+
+`lessqlite` is a free command-line utility written in Python providing a pager-based interface (like Unix `less`) for exploring, browsing, and scrolling through SQLite databases in your terminal. 
+
+The program is powered by generator functions so that even SQLite databases of very large sizes can be paged through easily.
+
+## Installation
+
+If you install `lessqlite` globally on your system via pip, you should be able to use it from anywhere:
+
+```
+pip install lessqlite
+```
+
+## Usage
+
+There are several different ways to use the tool so that you can customize your browsing experience. 
+
+A good place to start is the root help page:
+
+```
+lessqlite --help
+```
+
+or
+
+```
+lessqlite -h
+```
+
+### Stats 
+
+If you aren't viewing the root help page (see previous section), you must provide a path to a valid SQLite database as an argument:
+
+```
+lessqlite example.db
+```
+
+Such an invocation *will not* provide a pager interface for the database. Instead, it will print out a few simple statistics about your database.
+
+### Schema
+
+The first subcommand is `schema`, and as its name suggests it allows you to browse the provided database's schema of tables and columns in a pager-based interface. 
+
+For example:
+
+```
+lessqlite example.db schema
+```
+
+This subcommand has its own help page:
+
+```
+lessqlite example.db schema --help 
+```
+
+### Tables
+
+The `tables` subcommand is designed to be configurable enough to give you a comfortably flexible experience with browsing through an SQLite database in a terminal.
+
+If you forget how the options work or if you want to see the short versions of the flags we will cover next, check the help page:
+
+```
+lessqlite example.db tables --help
+```
+
+#### TABLENAME Arguments
+
+The `tables` subcommand accepts a variable number of arguments in the form of table names (0+). If no table names are provided as arguments, then all tables will be browsed instead. 
+
+The following command will allow you to scroll through all records in all tables:
+
+```
+lessqlite example.db tables 
+```
+
+Providing one or more table names as arguments functions as a kind of whitelist of tables to page through. 
+
+In the following example, only the `student` and `instructor` tables will be paged through:
+
+```
+lessqlite example.db tables student instructor 
+```
+
+#### Chunking
+
+By default, the contents of each table will be selected in chunks of at most 10 records at a time from the database for feeding into the pager. It is possible to configure the chunk size with the option `--chunk`. 
+
+The following example will chunk the records 50 at a time:
+
+```
+lessqlite example.db tables --chunk 50
+```
+
+To not chunk at all and instead pull each table into memory at once, pass 0 to the chunk option. Just be careful. For exceptionally large databases, this can be memory inefficient — or even memory impossible. 
+
+#### Table Stats
+
+To help you decide how to explore one or more tables, you can pass the `--stats` option, and the row count as well as other stats eill be displayed in the pager (rather than the actual rows of data). 
+
+In the following example, only stats will be displayed about the two named tables:
+
+```
+lessqlite example.db tables student instructor --stats 
+```
+
+#### Truncating Fields
+
+Another option to configure your experience of using the pager is the `--truncate` option. Pass a positive integer to it, and any field in any row with data of length surpassing the truncate option will be truncated to that length. 
+
+In the following example, all outputted fields in all rows of the specified table will have a max output length of 300 characters:
+
+```
+lessqlite example.db tables blog_post --truncate 300
+```
+
+#### Ranges of Records
+
+By default, the pager will page through all records in each targeted table. For tables with lots of records, this may be more than you are really interested in. 
+
+You can specify at most one range of records for each table you'll be paging through. Each usage of the `--range` option takes exactly three arguments: the name of the table that the range applies to, an integer referring to the lower limit (inclusive) for records to be displayed, and an integer referring to the upper limit (inclusive) for records to be displayed. 
