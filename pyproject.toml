@@ -7,6 +7,7 @@ authors = ["Dave VanderWeele <weele.me@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.6"
 click = "^8.0.0"
+coveralls = "^3.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
