@@ -56,7 +56,8 @@ def schema(ctx):
 @click.option('--range', '-r', '_range', multiple=True, nargs=3, type=(str, int, int), help='This option may be used multiple times and takes three arguments each time it is used: the name of a table, the lower row limit, and the upper row limit. For example, "--range customer 50 100" indicates you are only interested in records 50 (inclusive) through 100 (inclusive) in the customers table. In the absence of this option, all records in a table will be displayed. In any case, table records will not be displayed if: the table name is not also passed as an argument, or the default argument of all tables is used. If the upper limit is lower than the lower limit, your upper limit will be ignored and records through the end if the table will be displayed.')
 @click.option('--chunk', '-c', default=10, help='The number of rows to select at a time from the database\'s table(s) to power the pager. The default value is 10. Passing a 0 indicates to pull an entire table at once into memory.')
 @click.option('--truncate', '-t', default=0, help='The maximum number of characters to print for any field in any row pulled from the database. The default value of 0 indicates that no truncating should occur.')
-def tables(ctx, tablename, stats, _range, chunk, truncate):
+@click.option('--orderby', '-o', multiple=True, nargs=3, type=(str, str, str), help='Specify a table, column, and ASC or DESC to order the result set of rows fed into the pager accordingly. You may use one --orderby option for each table you are targeting.')
+def tables(ctx, tablename, stats, _range, chunk, truncate, order):
     """
     Explore the data in an SQLite DATABASE. If one or more TABLENAMEs are provided, it is used as a whitelist of tables to print records from, otherwise all tables will be drawn from.
     """

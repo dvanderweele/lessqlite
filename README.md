@@ -1,6 +1,6 @@
-# lessqlite
+# *lessqlite*
 
-
+WORK IN PROGRESS. NOT PUBLISHED TO PYPI YET.
 
 `lessqlite` is a free command-line utility written in Python providing a pager-based interface (like Unix `less`) for exploring, browsing, and scrolling through SQLite databases in your terminal. 
 
@@ -121,3 +121,7 @@ lessqlite example.db tables blog_post --truncate 300
 By default, the pager will page through all records in each targeted table. For tables with lots of records, this may be more than you are really interested in. 
 
 You can specify at most one range of records for each table you'll be paging through. Each usage of the `--range` option takes exactly three arguments: the name of the table that the range applies to, an integer referring to the lower limit (inclusive) for records to be displayed, and an integer referring to the upper limit (inclusive) for records to be displayed. 
+
+#### Ordering Records
+
+WIP
