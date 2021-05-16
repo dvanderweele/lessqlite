@@ -17,6 +17,8 @@ If you install `lessqlite` globally on your system via pip, you should be able t
 pip install lessqlite
 ```
 
+Of course you can install it in a virtual environment as well for a project.
+
 ## Usage
 
 There are several different ways to use the tool so that you can customize your browsing experience. 
