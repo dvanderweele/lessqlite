@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "lessqlite"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "A less-like command-line tool for paging throufh SQLite databases."
 authors = ["Dave VanderWeele <weele.me@gmail.com>"]
 
 [tool.poetry.dependencies]
