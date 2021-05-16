@@ -3,6 +3,8 @@
 
 |lessqlite| |Coverage Status|
 
+*v0.1.1*
+
 ``lessqlite`` is a free command-line utility written in Python providing
 a pager-based interface (like Unix ``less``) for exploring, browsing,
 and scrolling through SQLite databases in your terminal.
