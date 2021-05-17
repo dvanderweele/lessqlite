@@ -147,6 +147,7 @@ For example, sort the student table records by last_name in ascending order and 
 
 ```
 lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
-```
 
-According to my tests, it seems as though tables whose integer primary keys are an alias for the SQLite rowids (the most common type of SQLite table), in the absence of an explicit ordering, will tend to have their records selected in an ascending order according to those primary keys. 
+
+
+Mon May 17 11:36:22 UTC 2021
