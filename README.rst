@@ -202,10 +202,11 @@ the orderings in the order you specified them.
 For example, sort the student table records by last_name in ascending
 order and the instructor table by id in descending order:
 
-\``\` lessqlite example.db tables student instructor –orderby student
-last_name asc –orderby instructor id desc
+::
 
-Mon May 17 11:36:22 UTC 2021
+   lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
+
+Mon May 17 11:38:20 UTC 2021
 
 .. |lessqlite| image:: https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main
