@@ -3,7 +3,7 @@
 ![lessqlite](https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main)](https://coveralls.io/github/dvanderweele/lessqlite?branch=main)
 
-*v0.1.1*
+*v0.1.2*
 
 `lessqlite` is a free command-line utility written in Python providing a pager-based interface (like Unix `less`) for exploring, browsing, and scrolling through SQLite databases in your terminal. 
 
@@ -19,7 +19,7 @@ If you install `lessqlite` globally on your system via pip, you should be able t
 pip install lessqlite
 ```
 
-Of course you can install it in a virtual environment as well for a project.
+Of course you can install it in a virtual environment as well for a project. Requires Python 3.7 or newer.
 
 ## Usage
 
