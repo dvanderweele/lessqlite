@@ -3,7 +3,7 @@
 
 |lessqlite| |Coverage Status|
 
-*v0.1.1*
+*v0.1.2*
 
 ``lessqlite`` is a free command-line utility written in Python providing
 a pager-based interface (like Unix ``less``) for exploring, browsing,
@@ -26,7 +26,7 @@ be able to use it from anywhere:
    pip install lessqlite
 
 Of course you can install it in a virtual environment as well for a
-project.
+project. Requires Python 3.7 or newer.
 
 Usage
 -----
