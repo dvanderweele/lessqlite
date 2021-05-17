@@ -147,6 +147,7 @@ For example, sort the student table records by last_name in ascending order and 
 
 ```
 lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
+```
 
 
 
