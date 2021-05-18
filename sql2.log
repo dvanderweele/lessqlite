@@ -1,0 +1,2 @@
+
+SELECT * FROM two LIMIT -1 OFFSET -1

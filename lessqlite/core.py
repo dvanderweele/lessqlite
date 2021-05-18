@@ -125,7 +125,9 @@ def tables_generator(database, tables, _range, chunk, truncate, order):
                 if i != len(order[t]) - 1:
                     order_segs.append(', ')
             if chunk < 1:
-                q = f"SELECT * FROM {t}{''.join(order_segs)} LIMIT {_range[t]['u'] - _range[t]['l'] if _range[t]['u'] < 0 else _range[t]['u'] - _range[t]['l'] + 1} OFFSET {_range[t]['l'] - 1}"
+                offset = _range[t]['l'] - 1
+                limit  = _range[t]['u'] - _range[t]['l'] + 1
+                q = f"SELECT * FROM {t}{''.join(order_segs)} LIMIT {limit if limit > 0 else -1} OFFSET {offset}"
                 with open('sql2.log', 'a') as f:
                     f.write(q)
                     f.write('\n')
@@ -136,20 +138,24 @@ def tables_generator(database, tables, _range, chunk, truncate, order):
                         yield f'{row[k]}\n' if not(truncate) else f'{str(row[k])[:truncate]}'
                     yield '\n'
             else:
-                loops = 0
-                while True:
-                    local_chunk = chunk
-                    breakafter = False
-                    base = _range[t]['l'] + (chunk * loops)
-                    if _range[t]['u'] > _range[t]['l'] and base + chunk > _range[t]['u']:
-                        local_chunk = _range[t]['u'] - base + 1
-                        breakafter = True
-                    q = f'SELECT * FROM {t}{"".join(order_segs)} LIMIT {local_chunk} OFFSET {base}'
-                    with open('sql2.log', 'a') as f:
-                        f.write(q)
-                        f.write('\n')
+                read_count = 0
+                total_limit = _range[t]['u'] - _range[t]['l'] + 1
+                if total_limit < 1:
+                    total_limit = float('inf')
+                offset = _range[t]['l'] - 1
+                while read_count <= total_limit:
+                    limit = None
+                    if read_count > 0:
+                        offset += chunk 
+                    if read_count + chunk <= total_limit:
+                        limit = chunk
+                    else:
+                        limit = total_limit - read_count
+                    if limit < 1:
+                        break
+                    read_count += limit
+                    q = f'SELECT * FROM {t}{"".join(order_segs)} LIMIT {limit} OFFSET {offset}'
                     records = conn.execute(q).fetchall()
-                    loops += 1
                     if len(records) < 1:
                         break
                     else: 
@@ -158,8 +164,6 @@ def tables_generator(database, tables, _range, chunk, truncate, order):
                                 yield f'***\nField {k}:\n***\n'
                                 yield f'{r[k]}\n' if not(truncate) else f'{str(r[k])[:truncate]}'
                             yield '\n'
-                    if breakafter:
-                        break
             yield '\n'
     conn.close()
 
