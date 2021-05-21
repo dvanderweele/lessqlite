@@ -3,7 +3,7 @@
 
 |lessqlite| |Coverage Status|
 
-*v0.1.3*
+*v0.1.4*
 
 ``lessqlite`` is a free command-line utility written in Python providing
 a pager-based interface (like Unix ``less``) for exploring, browsing,
@@ -206,7 +206,7 @@ order and the instructor table by id in descending order:
 
    lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
 
-Tue May 18 14:56:16 UTC 2021
+Fri May 21 20:50:48 UTC 2021
 
 .. |lessqlite| image:: https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main

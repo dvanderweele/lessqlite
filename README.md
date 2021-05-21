@@ -154,4 +154,5 @@ lessqlite example.db tables student instructor --orderby student last_name asc -
 
 
 
-Tue May 18 14:56:16 UTC 2021
+
+Fri May 21 20:50:48 UTC 2021
