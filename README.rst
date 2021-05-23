@@ -207,7 +207,7 @@ order and the instructor table by id in descending order:
 
    lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
 
-Sun May 23 16:16:22 UTC 2021
+Sun May 23 16:18:51 UTC 2021
 
 .. |lessqlite| image:: https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main
@@ -216,5 +216,5 @@ Sun May 23 16:16:22 UTC 2021
 .. |GitHub release (latest SemVer)| image:: https://img.shields.io/github/v/release/dvanderweele/lessqlite
 .. |PyPI -Wheel| image:: https://img.shields.io/pypi/wheel/lessqlite
 .. |PyPI -Python Version| image:: https://img.shields.io/pypi/pyversions/lessqlite
-.. |License -MIT| image:: https://imgshields.io/badge/License-MIT-blue
+.. |License -MIT| image:: https://img.shields.io/badge/License-MIT-blue
 
