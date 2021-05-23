@@ -6,7 +6,7 @@
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dvanderweele/lessqlite)
 ![PyPI -Wheel](https://img.shields.io/pypi/wheel/lessqlite) 
 ![PyPI -Python Version](https://img.shields.io/pypi/pyversions/lessqlite) 
-![License -MIT](https://imgshields.io/badge/License-MIT-blue)
+![License -MIT](https://img.shields.io/badge/License-MIT-blue)
 
 *v0.1.4*
 
