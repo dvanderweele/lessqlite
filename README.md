@@ -2,6 +2,11 @@
 
 ![lessqlite](https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main)](https://coveralls.io/github/dvanderweele/lessqlite?branch=main)
+![PyPI](https://img.shields.io/pypi/v/lessqlite)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dvanderweele/lessqlite)
+![PyPI -Wheel](https://img.shields.io/pypi/wheel/lessqlite) 
+![PyPI -Python Version](https://img.shields.io/pypi/pyversions/lessqlite) 
+![License -MIT](https://imgshields.io/badge/License-MIT-blue)
 
 *v0.1.4*
 
