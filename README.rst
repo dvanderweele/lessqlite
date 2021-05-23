@@ -2,9 +2,8 @@
 ===========
 
 |lessqlite| |Coverage Status| |PyPI| |GitHub release (latest SemVer)|
-|PyPI -Wheel| |PyPI -Python Version| |License -MIT|
-
-*v0.1.4*
+|PyPI -Wheel| |PyPI -Python Version| |License -MIT| |GitHub all
+releases| |PyPI - Downloads|
 
 ``lessqlite`` is a free command-line utility written in Python providing
 a pager-based interface (like Unix ``less``) for exploring, browsing,
@@ -207,7 +206,7 @@ order and the instructor table by id in descending order:
 
    lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
 
-Sun May 23 16:35:12 UTC 2021
+Sun May 23 16:44:03 UTC 2021
 
 .. |lessqlite| image:: https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main
@@ -217,4 +216,6 @@ Sun May 23 16:35:12 UTC 2021
 .. |PyPI -Wheel| image:: https://img.shields.io/pypi/wheel/lessqlite
 .. |PyPI -Python Version| image:: https://img.shields.io/pypi/pyversions/lessqlite
 .. |License -MIT| image:: https://img.shields.io/badge/License-MIT-blue
+.. |GitHub all releases| image:: https://img.shields.io/github/downloads/dvanderweele/lessqlite/total
+.. |PyPI - Downloads| image:: https://img.shields.io/pypi/dm/lessqlite
 
