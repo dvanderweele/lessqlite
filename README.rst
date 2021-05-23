@@ -1,7 +1,8 @@
 *lessqlite*
 ===========
 
-|lessqlite| |Coverage Status|
+|lessqlite| |Coverage Status| |PyPI| |GitHub release (latest SemVer)|
+|PyPI -Wheel| |PyPI -Python Version| |License -MIT|
 
 *v0.1.4*
 
@@ -206,8 +207,14 @@ order and the instructor table by id in descending order:
 
    lessqlite example.db tables student instructor --orderby student last_name asc --orderby instructor id desc 
 
-Fri May 21 20:50:48 UTC 2021
+Sun May 23 16:16:22 UTC 2021
 
 .. |lessqlite| image:: https://github.com/dvanderweele/lessqlite/actions/workflows/test.yml/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/dvanderweele/lessqlite/badge.svg?branch=main
    :target: https://coveralls.io/github/dvanderweele/lessqlite?branch=main
+.. |PyPI| image:: https://img.shields.io/pypi/v/lessqlite
+.. |GitHub release (latest SemVer)| image:: https://img.shields.io/github/v/release/dvanderweele/lessqlite
+.. |PyPI -Wheel| image:: https://img.shields.io/pypi/wheel/lessqlite
+.. |PyPI -Python Version| image:: https://img.shields.io/pypi/pyversions/lessqlite
+.. |License -MIT| image:: https://imgshields.io/badge/License-MIT-blue
+
